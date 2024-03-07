@@ -3,4 +3,5 @@
     <string name="home_tab">Home</string>
     <string name="books_tab">Books</string>
     <string name="profile_tab">Profile</string>
+    <string name="audios_tab">Audios</string>
 </resources>
