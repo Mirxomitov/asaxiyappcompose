@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AsaxiyAppCompose</string>
+    <string name="home_tab">Home</string>
+    <string name="books_tab">Books</string>
+    <string name="profile_tab">Profile</string>
+</resources>

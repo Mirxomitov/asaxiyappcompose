@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "335134668029",
+    "project_id": "asaxiy-books",
+    "storage_bucket": "asaxiy-books.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335134668029:android:4323febc6d4293a75cfa94",
+        "android_client_info": {
+          "package_name": "com.example.asaxiybooks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlrQb4ata-jvXPTolMrZXwO9NEdWYdaMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335134668029:android:674fce281b9a0e575cfa94",
+        "android_client_info": {
+          "package_name": "com.example.asaxiybooksincompose"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlrQb4ata-jvXPTolMrZXwO9NEdWYdaMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335134668029:android:c3efef271fed10375cfa94",
+        "android_client_info": {
+          "package_name": "uz.gita.asaxiyappcompose"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlrQb4ata-jvXPTolMrZXwO9NEdWYdaMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
