@@ -1,6 +1,8 @@
 package uz.gita.asaxiyappcompose.screens.main.tabs.profile
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -48,13 +50,13 @@ fun ProfileContent(uiState: ProfileState, eventDispatchers: (ProfileViewModel.Pr
             .fillMaxSize()
             .background(White)
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
                 .background(Black),
         ) {
-            Text(text = "Profile", fontSize = 18.sp, color = White)
+            Text(text = "Profile", fontSize = 18.sp, color = White, modifier = Modifier.align(Alignment.Center))
         }
 
         ElevatedCard(
@@ -79,7 +81,8 @@ fun ProfileContent(uiState: ProfileState, eventDispatchers: (ProfileViewModel.Pr
                         .weight(1f)
                         .align(Alignment.CenterVertically)
                         .padding(start = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(text = uiState.firstName, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                     Text(text = uiState.lastName, fontWeight = FontWeight.Bold, fontSize = 12.sp)

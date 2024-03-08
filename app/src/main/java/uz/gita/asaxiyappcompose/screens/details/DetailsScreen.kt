@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
@@ -13,6 +14,10 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +32,7 @@ import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import uz.gita.asaxiyappcompose.R
 import uz.gita.asaxiyappcompose.data.model.AudioBookData
+import uz.gita.asaxiyappcompose.utils.logger
 
 class DetailsScreen : Screen {
     @Composable
@@ -54,8 +60,10 @@ private fun DetailsContent(uiState: DetailsState, eventDispatcher: (DetailsViewM
             }
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier
-                    .height(200.dp)
-                    .width(100.dp)
+                    .padding(24.dp)
+                    .height(300.dp)
+                    .width(200.dp)
+                    .padding(12.dp)
             ) {
                 AsyncImage(
                     model = uiState.bookData.img,
@@ -72,6 +80,8 @@ private fun DetailsContent(uiState: DetailsState, eventDispatcher: (DetailsViewM
             Text(text = uiState.bookData.name, fontSize = 18.sp, fontStyle = FontStyle.Normal, fontWeight = FontWeight.Bold)
             Text(text = uiState.bookData.author, fontSize = 12.sp)
 
+            var isPurchased by remember { mutableStateOf(!uiState.bookData.purchased) }
+            logger("DetailsContent.purchased =${uiState.bookData.purchased}")
             Button(
                 onClick = {
                     eventDispatcher(
@@ -79,14 +89,11 @@ private fun DetailsContent(uiState: DetailsState, eventDispatcher: (DetailsViewM
                             uiState.bookData.name, ""/*Nav Args da olib o'tilgan*/
                         )
                     )
+                    isPurchased = false
                 },
-                enabled = !uiState.bookData.purchased
+                enabled = isPurchased
             ) {
-                if (!uiState.bookData.purchased) {
-                    Text(text = "BUY BOOK")
-                } else {
-                    Text(text = "Purchased")
-                }
+                Text(text = "BUY BOOK")
             }
 
             Text(text = "Description:", fontSize = 18.sp, color = Color.Black, fontWeight = FontWeight.Bold)

@@ -2,6 +2,7 @@ package uz.gita.asaxiyappcompose.screens.main.tabs.downloads
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -48,13 +49,14 @@ fun DownloadsContent(uiState: DownloadsState, eventDispatchers: (DownloadsViewMo
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
+                .align(Alignment.CenterHorizontally)
                 .background(Color.Black),
         ) {
-            Text(text = "My Books", fontSize = 18.sp, color = Color.White)
+            Text(text = "My Books", fontSize = 18.sp, color = Color.White, modifier = Modifier.align(Alignment.Center))
         }
         LazyColumn {
             items(uiState.books) {

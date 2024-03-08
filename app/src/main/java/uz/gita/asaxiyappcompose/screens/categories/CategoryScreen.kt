@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -54,34 +56,43 @@ fun CategoryContent(uiState: CategoryState, eventDispatcher: (CategoryViewModel.
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .padding(horizontal = 8.dp, vertical = 12.dp),
             columns = GridCells.Adaptive(minSize = 128.dp)
         ) {
             items(uiState.bookList) {
-                ElevatedCard(elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier
-                    .height(300.dp)
-                    .width(200.dp)
-                    .clickable {
-                        eventDispatcher(
-                            CategoryViewModel.CategoryIntent.OpenBook(
-                                it.name, uiState.type
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier
+                        .weight(1f)
+                        .width(200.dp)
+                        .clickable {
+                            eventDispatcher(
+                                CategoryViewModel.CategoryIntent.OpenBook(
+                                    it.name, uiState.type
+                                )
                             )
-                        )
-                    }
+                        }
+                        .background(Color.White)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     AsyncImage(
                         model = it.img,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(100.dp)
-                            .padding(end = 10.dp),
+                            .height(100.dp),
                         contentScale = ContentScale.Crop,
                         placeholder = painterResource(id = R.drawable.audio_book),
                         error = painterResource(id = R.drawable.audio_book),
                         contentDescription = ""
                     )
-                    Text(text = it.name)
-                    Text(text = it.author)
+                    Text(
+                        text = it.name,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(text = it.author, fontSize = 12.sp)
                 }
             }
         }

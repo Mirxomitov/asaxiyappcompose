@@ -10,7 +10,8 @@ interface BooksViewModel {
     sealed interface BooksIntent {
         data class OpenBook(val book: DataUI) : BooksIntent
         data class OpenCategory(
-            val category: String
+            val category: String,
+            val type : String
         ) : BooksIntent
 
         data object ShowBooks : BooksIntent

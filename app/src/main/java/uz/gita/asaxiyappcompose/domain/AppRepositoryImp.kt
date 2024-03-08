@@ -35,8 +35,15 @@ class AppRepositoryImp @Inject constructor(
     private val storage: FirebaseStorage,
     private val bookDao: BookDao
 ) : AppRepository {
+
     private var listHome: List<UserBookData> = listOf()
 
+
+    override var currentBook: UserBookData = UserBookData()
+        set(value) {
+            logger("currentBook SETTER :$value")
+            field = value
+        }
     override var currentCategory: String = ""
     override var currentType: String = ""
         set(value) {

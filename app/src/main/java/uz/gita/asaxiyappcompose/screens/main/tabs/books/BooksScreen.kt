@@ -3,6 +3,7 @@ package uz.gita.asaxiyappcompose.screens.main.tabs.books
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,15 +23,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import uz.gita.asaxiyappcompose.R
-import uz.gita.asaxiyappcompose.screens.main.tabs.audios.AudiosViewModel
-import uz.gita.asaxiyappcompose.ui.theme.AsaxiyAppComposeTheme
 
 class BooksScreen : Screen {
     @Composable
@@ -48,6 +47,16 @@ fun BooksContent(uiState: BooksState, eventDispatchers: (BooksViewModel.BooksInt
             .fillMaxSize()
             .background(Color.White)
     ) {
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .background(Color.Black),
+            ) {
+                Text(text = "Books", fontSize = 18.sp, color = Color.White, modifier = Modifier.align(Alignment.Center))
+            }
+        }
         items(uiState.allCategoryBooksList) { categoryData ->
             Row(
                 modifier = Modifier
@@ -63,7 +72,7 @@ fun BooksContent(uiState: BooksState, eventDispatchers: (BooksViewModel.BooksInt
                     modifier = Modifier.clickable {
                         eventDispatchers(
                             BooksViewModel.BooksIntent.OpenCategory(
-                                category = categoryData.categoryName,
+                                category = categoryData.categoryName, type = "books"
                             )
                         )
                     })
@@ -74,80 +83,36 @@ fun BooksContent(uiState: BooksState, eventDispatchers: (BooksViewModel.BooksInt
                         modifier = Modifier
                             .padding(end = 12.dp)
                             .width(96.dp)
-                            .height(248.dp),
+                            .height(248.dp)
+                            .clickable { eventDispatchers(BooksViewModel.BooksIntent.OpenBook(it)) },
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         AsyncImage(
                             model = it.img,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(96.dp),
+                                .height(200.dp),
                             contentScale = ContentScale.Crop,
                             placeholder = painterResource(id = R.drawable.audio_book),
                             error = painterResource(id = R.drawable.audio_book),
                             contentDescription = ""
                         )
 
-                        Text(text = it.name, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 3)
-                        Text(text = it.author, fontSize = 8.sp, fontWeight = FontWeight.Light)
+                        Text(
+                            text = it.name,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = it.author,
+                            fontSize = 8.sp,
+                            fontWeight = FontWeight.Light
+                        )
                     }
                 }
             }
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun BooksPreview() {
-    AsaxiyAppComposeTheme {
-        BooksContent(eventDispatchers = {}, uiState = BooksState())
-    }
-}
-
-//private val ls = arrayListOf<List<CategoryData>>().apply {
-//    repeat(10) {
-//        add(
-//            listOf(
-//                CategoryData(
-//                    categoryName = "name",
-//                    bookList = arrayListOf(
-//                        DataUI(
-//                            id = "1",
-//                            author = "Author Name",
-//                            category = "Humor",
-//                            description = "Book lorem ispum",
-//                            img = "https://firebasestorage.googleapis.com/v0/b/asaxiy-books.appspot.com/o/images%2Faudio_book.png?alt=media&token=87cd9e33-ce3f-41ab-9fab-7eacb1d24181",
-//                            name = "Audio Name",
-//                            path = "audio/Ж_Бизе,_Кармен,_Куплеты_Эскамильо,_Георг_Отс.mp3",
-//                            size = "5904718",
-//                            purchased = true
-//                        ),
-//                        DataUI(
-//                            id = "2",
-//                            author = "Author Name",
-//                            category = "Humor",
-//                            description = "Book lorem ispum",
-//                            img = "https://firebasestorage.googleapis.com/v0/b/asaxiy-books.appspot.com/o/images%2Faudio_book.png?alt=media&token=87cd9e33-ce3f-41ab-9fab-7eacb1d24181",
-//                            name = "Audio Name",
-//                            path = "audio/Ж_Бизе,_Кармен,_Куплеты_Эскамильо,_Георг_Отс.mp3",
-//                            size = "5904718",
-//                            purchased = false
-//                        ),
-//                        DataUI(
-//                            id = "3",
-//                            author = "Author Name",
-//                            category = "Humor",
-//                            description = "Book lorem ispum",
-//                            img = "https://firebasestorage.googleapis.com/v0/b/asaxiy-books.appspot.com/o/images%2Faudio_book.png?alt=media&token=87cd9e33-ce3f-41ab-9fab-7eacb1d24181",
-//                            name = "Audio Name",
-//                            path = "audio/Ж_Бизе,_Кармен,_Куплеты_Эскамильо,_Георг_Отс.mp3",
-//                            size = "5904718",
-//                            purchased = false
-//                        )
-//                    )
-//                )
-//            )
-//        )
-//    }
-//}

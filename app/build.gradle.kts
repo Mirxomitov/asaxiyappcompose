@@ -118,4 +118,7 @@ dependencies {
 
     // Coil Compose == Glide
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // pdf view
+    implementation ("io.github.grizzi91:bouquet:1.1.2")
 }

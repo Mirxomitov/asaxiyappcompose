@@ -6,9 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.gita.asaxiyappcompose.domain.AppRepository
 import uz.gita.asaxiyappcompose.navigation.AppNavigator
+import uz.gita.asaxiyappcompose.screens.pdf.PdfScreen
 import uz.gita.asaxiyappcompose.screens.player.PlayerScreen
 import uz.gita.asaxiyappcompose.utils.logger
 import javax.inject.Inject
@@ -25,8 +27,8 @@ class DownloadsViewModelImpl @Inject constructor(
             is DownloadsViewModel.DownloadsIntent.ShowBooks -> {
                 repository.allUserBooks().onEach {
                     it.onSuccess {
-                        logger("DownloadsViewModel.DownloadsIntent.ShowBooks.allUserBooks() =$it")
-                        uiState.value.books = it
+                        logger("DownloadsViewModel.DownloadsIntent.ShowBooks.allUserBooks() =${it.size}")
+                        uiState.emit(DownloadsState(it))
                     }
                     it.onFailure {
                         logger("DownloadsViewModel.DownloadsIntent.ShowBooks" + (it.message ?: "Unknown message"))
@@ -47,7 +49,9 @@ class DownloadsViewModelImpl @Inject constructor(
 
             is DownloadsViewModel.DownloadsIntent.OpenPdfBook -> {
                 repository.currentBook = intent.book
-                //appNavigator.navigate(PdfScreen())
+                viewModelScope.launch {
+                    appNavigator.navigate(PdfScreen(intent.book.path))
+                }
             }
 
             is DownloadsViewModel.DownloadsIntent.OpenAudioBook -> {

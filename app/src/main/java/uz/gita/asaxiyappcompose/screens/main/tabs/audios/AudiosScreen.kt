@@ -3,6 +3,7 @@ package uz.gita.asaxiyappcompose.screens.main.tabs.audios
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,13 +23,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import uz.gita.asaxiyappcompose.R
-import uz.gita.asaxiyappcompose.data.model.DataUI
 import uz.gita.asaxiyappcompose.screens.main.tabs.audios.AudiosViewModel.AudiosIntent.OpenCategory
 
 
@@ -48,6 +49,16 @@ fun AudiosContent(uiState: AudiosState, eventDispatchers: (AudiosViewModel.Audio
             .fillMaxSize()
             .background(Color.White)
     ) {
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .background(Color.Black),
+            ) {
+                Text(text = "Audios", fontSize = 18.sp, color = Color.White, modifier = Modifier.align(Alignment.Center))
+            }
+        }
         items(uiState.allCategoryAudios) { categoryData ->
             Row(
                 modifier = Modifier
@@ -82,15 +93,25 @@ fun AudiosContent(uiState: AudiosState, eventDispatchers: (AudiosViewModel.Audio
                             model = it.img,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(96.dp),
+                                .height(200.dp),
                             contentScale = ContentScale.Crop,
                             placeholder = painterResource(id = R.drawable.audio_book),
                             error = painterResource(id = R.drawable.audio_book),
                             contentDescription = ""
                         )
 
-                        Text(text = it.name, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 3)
-                        Text(text = it.author, fontSize = 8.sp, fontWeight = FontWeight.Light)
+                        Text(
+                            text = it.name,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = it.author,
+                            fontSize = 8.sp,
+                            fontWeight = FontWeight.Light
+                        )
                     }
                 }
             }
