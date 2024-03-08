@@ -14,7 +14,7 @@ interface AudiosViewModel {
         fun onEventDispatchers(intent: AudiosIntent)
         val uiState: StateFlow<AudiosState>
     sealed interface AudiosIntent {
-        data class OpenAudio(val book: DataUI) : AudiosIntent
+        data class OpenAudio(var type : String, var bookName : String) : AudiosIntent
         data class OpenCategory(
             val category: String,
             val type : String

@@ -8,7 +8,8 @@ interface CategoryViewModel {
 
     sealed interface CategoryIntent {
         data class OpenBook(
-            val bookName: String, val bookType: String
+            val bookName: String,
+            val bookType: String
         ) : CategoryIntent
 
         data object Back : CategoryIntent

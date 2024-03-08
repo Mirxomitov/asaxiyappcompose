@@ -9,5 +9,6 @@ interface DetailsViewModel {
     sealed interface DetailsIntent {
         data object Back : DetailsIntent
         data class ShowBook(var data : AudioBookData) : DetailsIntent
+        data class BuyBook(var bookName : String, var bookType : String) : DetailsIntent
     }
 }

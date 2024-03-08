@@ -21,12 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import uz.gita.asaxiyappcompose.R
+import uz.gita.asaxiyappcompose.data.model.DataUI
 import uz.gita.asaxiyappcompose.screens.main.tabs.audios.AudiosViewModel.AudiosIntent.OpenCategory
 
 
@@ -48,40 +50,47 @@ fun AudiosContent(uiState: AudiosState, eventDispatchers: (AudiosViewModel.Audio
     ) {
         items(uiState.allCategoryAudios) { categoryData ->
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, end = 12.dp, start = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = categoryData.category)
-                Text(text = "All books", modifier = Modifier.clickable {
-                    eventDispatchers(
-                        OpenCategory(
-                            category = categoryData.category, type = "audios"
+                Text(text = categoryData.category, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(text = "All books",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.sp,
+                    color = Color.Blue,
+                    modifier = Modifier.clickable {
+                        eventDispatchers(
+                            OpenCategory(
+                                category = categoryData.category, type = "audios"
+                            )
                         )
-                    )
-                })
+                    })
             }
             LazyRow {
                 items(categoryData.bookArr) {
                     Column(
                         modifier = Modifier
-                            .height(144.dp)
-                            .width(96.dp),
+                            .padding(end = 12.dp)
+                            .width(96.dp)
+                            .height(248.dp)
+                            .clickable { eventDispatchers(AudiosViewModel.AudiosIntent.OpenAudio(type = "audios", bookName = it.name)) },
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         AsyncImage(
                             model = it.img,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(100.dp)
-                                .padding(end = 10.dp),
+                                .height(96.dp),
                             contentScale = ContentScale.Crop,
                             placeholder = painterResource(id = R.drawable.audio_book),
                             error = painterResource(id = R.drawable.audio_book),
                             contentDescription = ""
                         )
 
-                        Text(text = it.name, fontSize = 18.sp)
-                        Text(text = it.author, fontSize = 12.sp)
+                        Text(text = it.name, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 3)
+                        Text(text = it.author, fontSize = 8.sp, fontWeight = FontWeight.Light)
                     }
                 }
             }

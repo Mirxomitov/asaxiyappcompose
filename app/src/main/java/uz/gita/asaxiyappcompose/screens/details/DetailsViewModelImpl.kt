@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.gita.asaxiyappcompose.domain.AppRepository
 import uz.gita.asaxiyappcompose.navigation.AppNavigator
@@ -14,20 +15,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModelImpl @Inject constructor(
-    private val repository: AppRepository,
-    private val navigator: AppNavigator
+    private val repository: AppRepository, private val navigator: AppNavigator
 ) : ViewModel(), DetailsViewModel {
 
     override val uiState = MutableStateFlow(DetailsState())
     override fun onEventDispatchers(intent: DetailsViewModel.DetailsIntent) {
         when (intent) {
             is DetailsViewModel.DetailsIntent.ShowBook -> {
+                logger("SHOW BOOK getAudioBookDetails ${repository.currentBookName} ${repository.currentType}")
                 repository.getAudioBookDetails(repository.currentBookName, repository.currentType).onEach {
                     it.onSuccess {
-                        intent.data = it
+                        uiState.update { state -> state.copy(bookData = it) }
+                        logger("DetailsViewModel.DetailsIntent.ShowBook.onSuccess -> ${it.name}")
                     }
                     it.onFailure {
-                        logger(it.message ?: "Unknown Message")
+                        logger("DetailsViewModel.DetailsIntent.ShowBook.onFailure -> $it")
                     }
                 }.launchIn(viewModelScope)
             }
@@ -36,6 +38,18 @@ class DetailsViewModelImpl @Inject constructor(
                 viewModelScope.launch {
                     navigator.back()
                 }
+            }
+
+            is DetailsViewModel.DetailsIntent.BuyBook -> {
+                logger("DetailsViewModel.DetailsIntent.BuyBook -> repo.currenttype =" + repository.currentType)
+                repository.buyBook(repository.currentBookName, repository.currentType).onEach {
+                    it.onSuccess {
+                        logger("SUCCESSFULLY BOUGHT")
+                    }
+                    it.onFailure {
+                        logger("BOOK BOUGHT FAILURE")
+                    }
+                }.launchIn(viewModelScope)
             }
         }
     }

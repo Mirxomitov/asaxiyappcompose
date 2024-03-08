@@ -39,6 +39,10 @@ class AppRepositoryImp @Inject constructor(
 
     override var currentCategory: String = ""
     override var currentType: String = ""
+        set(value) {
+            logger("currentTYPE setter =$value")
+            if (value != "") field = value
+        }
     override var currentBookName: String = ""
 
     override fun getBooksByCategoryMap(): Flow<Result<List<CategoryData>>> = callbackFlow {
@@ -299,6 +303,7 @@ class AppRepositoryImp @Inject constructor(
     }
 
     override fun buyBook(bookName: String, type: String): Flow<Result<Unit>> = channelFlow {
+        logger("REPOSITORY BUY BOOK -> TYPE=$type")
         fireStore
             .collection(type)
             .whereEqualTo("name", bookName)

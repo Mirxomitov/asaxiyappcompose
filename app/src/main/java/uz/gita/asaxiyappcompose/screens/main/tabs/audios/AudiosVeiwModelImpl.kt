@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import uz.gita.asaxiyappcompose.domain.AppRepository
 import uz.gita.asaxiyappcompose.navigation.AppNavigator
 import uz.gita.asaxiyappcompose.screens.categories.CategoryScreen
+import uz.gita.asaxiyappcompose.screens.details.DetailsScreen
 import uz.gita.asaxiyappcompose.utils.logger
 import javax.inject.Inject
 
@@ -26,13 +27,19 @@ class AudiosViewModelImpl @Inject constructor(
         logger("AudiosViewModelImpl.onEventDispatchers.intent=$intent")
         when (intent) {
             is AudiosViewModel.AudiosIntent.OpenAudio -> {
-//                appNavigator.navigate(Screen(intent.book))
+                viewModelScope.launch {
+                    repository.currentBookName = intent.bookName
+                    repository.currentType = intent.type
+                    appNavigator.navigate(DetailsScreen())
+                }
             }
 
             is AudiosViewModel.AudiosIntent.OpenCategory -> {
                 viewModelScope.launch {
+                    logger("AudiosViewModelImpl.AudiosIntent.OpenCategory.repository.currentType = intent.type =${intent.type}")
                     repository.currentCategory = intent.category
                     repository.currentType = intent.type
+
                     appNavigator.navigate(CategoryScreen())
                 }
             }
@@ -42,16 +49,18 @@ class AudiosViewModelImpl @Inject constructor(
                     it.onSuccess {
                         logger("Success get data ${it.size}")
                         uiState.update { state ->
-                            state.allCategoryAudios = it
+                            state.allCategoryAudios.clear()
+                            state.allCategoryAudios.addAll(it)
                             logger("Success get data update -> $it")
                             state
                         }
+//                        uiState.update { state -> state.copy(bookData = it) }
                     }
 
                     it.onFailure {
                         logger("HELLO WORLD")
                         uiState.update { state ->
-                            state.allCategoryAudios = emptyList()
+                            state.allCategoryAudios.clear()
                             state
                         }
                     }
