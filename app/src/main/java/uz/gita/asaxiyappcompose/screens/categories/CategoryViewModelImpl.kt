@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import uz.gita.asaxiyappcompose.domain.AppRepository
 import uz.gita.asaxiyappcompose.navigation.AppNavigator
+import uz.gita.asaxiyappcompose.screens.details.DetailsScreen
+import uz.gita.asaxiyappcompose.screens.details.DetailsState
 import uz.gita.asaxiyappcompose.utils.logger
 import javax.inject.Inject
 
@@ -23,7 +25,7 @@ class CategoryViewModelImpl @Inject constructor(
                 viewModelScope.launch {
                     repository.currentType = intent.bookType
                     repository.currentBookName = intent.bookName
-                    //appNavigator.navigate(Screen(type, name))
+                    appNavigator.navigate(DetailsScreen())
                 }
             }
 
