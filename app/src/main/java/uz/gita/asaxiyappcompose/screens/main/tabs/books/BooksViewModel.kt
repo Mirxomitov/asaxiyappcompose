@@ -1,21 +1,19 @@
 package uz.gita.asaxiyappcompose.screens.main.tabs.books
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import uz.gita.asaxiyappcompose.domain.AppRepository
-import uz.gita.asaxiyappcompose.navigation.AppNavigator
-import javax.inject.Inject
+import kotlinx.coroutines.flow.StateFlow
+import uz.gita.asaxiyappcompose.data.model.DataUI
 
-@HiltViewModel
-class BooksViewModel @Inject constructor(
-    private val appNavigator: AppNavigator,
-    private val repository: AppRepository,
-) : ViewModel() {
-    fun onEventDispatchers(intent: BooksIntent) {
+interface BooksViewModel {
+    fun onEventDispatchers(intent: BooksIntent)
+    val uiState: StateFlow<BooksState>
 
+    sealed interface BooksIntent {
+        data class OpenBook(val book: DataUI) : BooksIntent
+        data class OpenCategory(
+            val category: String
+        ) : BooksIntent
+
+        data object ShowBooks : BooksIntent
     }
 }
 
-sealed interface BooksIntent {
-
-}

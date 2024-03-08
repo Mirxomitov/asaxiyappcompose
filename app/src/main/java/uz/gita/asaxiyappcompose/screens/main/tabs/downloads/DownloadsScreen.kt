@@ -9,8 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
-import uz.gita.asaxiyappcompose.screens.main.tabs.books.BooksIntent
-import uz.gita.asaxiyappcompose.screens.main.tabs.books.BooksViewModel
 
 
 class DownloadsScreen : Screen {

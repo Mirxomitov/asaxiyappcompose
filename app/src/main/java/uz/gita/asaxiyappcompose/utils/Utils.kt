@@ -15,6 +15,6 @@ fun <T> Flow<T>.launchLifecycle(lifecycle: Lifecycle, scope: LifecycleCoroutineS
         .launchIn(scope)
 }
 
-fun logger(msg : String, tag : String = "TTTT") {
+fun logger(msg : String, tag : String = "TTT") {
     Log.d(tag, msg)
 }

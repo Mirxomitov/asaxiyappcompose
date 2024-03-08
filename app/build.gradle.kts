@@ -115,4 +115,7 @@ dependencies {
 
     // TabNavigator
     implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+
+    // Coil Compose == Glide
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
