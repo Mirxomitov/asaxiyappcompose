@@ -16,7 +16,7 @@ class ProfileViewModelImpl @Inject constructor(
     private val appNavigator: AppNavigator,
     private val repository: AppRepository,
 ) : ViewModel(), ProfileViewModel {
-    override val uiState = MutableStateFlow<ProfileState>(ProfileState())
+    override val uiState = MutableStateFlow(ProfileState())
 
     override fun onEventDispatchers(intent: ProfileViewModel.ProfileIntent) {
         when (intent) {

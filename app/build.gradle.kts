@@ -5,7 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
     kotlin("kapt")
-}
+}   
 
 android {
     namespace = "uz.gita.asaxiyappcompose"

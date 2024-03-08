@@ -9,6 +9,7 @@ import uz.gita.asaxiyappcompose.data.model.UserData
 
 
 interface AppRepository {
+    var currentBook: UserBookData
     var currentCategory: String
     var currentType: String
     var currentBookName: String

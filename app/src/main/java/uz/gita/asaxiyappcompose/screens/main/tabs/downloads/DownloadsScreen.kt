@@ -1,6 +1,7 @@
 package uz.gita.asaxiyappcompose.screens.main.tabs.downloads
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -63,15 +64,22 @@ fun DownloadsContent(uiState: DownloadsState, eventDispatchers: (DownloadsViewMo
                         .fillMaxWidth()
                         .height(144.dp)
                         .padding(top = 12.dp)
-                        .align(Alignment.CenterHorizontally),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
-                ) {
+                        .align(Alignment.CenterHorizontally)
+                        .clickable {
+                            eventDispatchers(
+                                if (it.type == "audios") DownloadsViewModel.DownloadsIntent.OpenAudioBook(it)
+                                else DownloadsViewModel.DownloadsIntent.OpenPdfBook(it)
+                            )
+                        },
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+
+                    ) {
                     Row(modifier = Modifier.fillMaxSize()) {
                         AsyncImage(
                             model = it.img,
                             modifier = Modifier
                                 .padding(start = 12.dp)
-                                .width(132.dp)
+                                .width(96.dp)
                                 .height(132.dp),
                             contentScale = ContentScale.Crop,
                             placeholder = painterResource(id = R.drawable.audio_book),
@@ -90,14 +98,19 @@ fun DownloadsContent(uiState: DownloadsState, eventDispatchers: (DownloadsViewMo
                             Text(text = it.author, fontWeight = FontWeight.Light, fontSize = 12.sp)
                         }
 
-                        Icon(
-                            painter = painterResource(id = R.drawable.download), contentDescription = "download icon",
-                            modifier = Modifier
-                                .size(36.dp)
-                                .align(Alignment.Bottom)
-                                .padding(12.dp)
-
-                        )
+                        if (!it.download) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.download), contentDescription = "download icon",
+                                modifier = Modifier
+                                    .size(56.dp)
+                                    .align(Alignment.Bottom)
+                                    .padding(12.dp)
+                                    .clickable {
+                                        eventDispatchers(DownloadsViewModel.DownloadsIntent.Download(it))
+                                        eventDispatchers(DownloadsViewModel.DownloadsIntent.ShowBooks)
+                                    },
+                            )
+                        }
                     }
                 }
             }

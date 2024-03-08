@@ -6,8 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import uz.gita.asaxiyappcompose.domain.AppRepository
 import uz.gita.asaxiyappcompose.navigation.AppNavigator
+import uz.gita.asaxiyappcompose.screens.player.PlayerScreen
 import uz.gita.asaxiyappcompose.utils.logger
 import javax.inject.Inject
 
@@ -19,7 +21,7 @@ class DownloadsViewModelImpl @Inject constructor(
     override val uiState = MutableStateFlow(DownloadsState(listOf()))
 
     override fun onEventDispatchers(intent: DownloadsViewModel.DownloadsIntent) {
-        when(intent) {
+        when (intent) {
             is DownloadsViewModel.DownloadsIntent.ShowBooks -> {
                 repository.allUserBooks().onEach {
                     it.onSuccess {
@@ -27,9 +29,32 @@ class DownloadsViewModelImpl @Inject constructor(
                         uiState.value.books = it
                     }
                     it.onFailure {
-                        logger("DownloadsViewModel.DownloadsIntent.ShowBooks" +( it.message ?: "Unknown message"))
+                        logger("DownloadsViewModel.DownloadsIntent.ShowBooks" + (it.message ?: "Unknown message"))
                     }
                 }.launchIn(viewModelScope)
+            }
+
+            is DownloadsViewModel.DownloadsIntent.Download -> {
+                repository.download(intent.book).onEach {
+                    it.onSuccess {
+//                        dondloadPdf.emit(it)
+                    }
+                    it.onFailure {
+//                        showMessage.emit(it.message ?: "Unknown message")
+                    }
+                }.launchIn(viewModelScope)
+            }
+
+            is DownloadsViewModel.DownloadsIntent.OpenPdfBook -> {
+                repository.currentBook = intent.book
+                //appNavigator.navigate(PdfScreen())
+            }
+
+            is DownloadsViewModel.DownloadsIntent.OpenAudioBook -> {
+                repository.currentBook = intent.book
+                viewModelScope.launch {
+                    appNavigator.navigate(PlayerScreen())
+                }
             }
         }
     }
