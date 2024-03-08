@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import uz.gita.asaxiyappcompose.data.model.UserBookData
 import uz.gita.asaxiyappcompose.domain.AppRepository
 import uz.gita.asaxiyappcompose.navigation.AppNavigator
 import uz.gita.asaxiyappcompose.screens.pdf.PdfScreen
@@ -20,7 +21,7 @@ class DownloadsViewModelImpl @Inject constructor(
     private val appNavigator: AppNavigator,
     private val repository: AppRepository,
 ) : ViewModel(), DownloadsViewModel {
-    override val uiState = MutableStateFlow(DownloadsState(listOf()))
+    override val uiState = MutableStateFlow(DownloadsState(arrayListOf()))
 
     override fun onEventDispatchers(intent: DownloadsViewModel.DownloadsIntent) {
         when (intent) {
@@ -28,7 +29,7 @@ class DownloadsViewModelImpl @Inject constructor(
                 repository.allUserBooks().onEach {
                     it.onSuccess {
                         logger("DownloadsViewModel.DownloadsIntent.ShowBooks.allUserBooks() =${it.size}")
-                        uiState.emit(DownloadsState(it))
+                        uiState.emit(DownloadsState(books = arrayListOf<UserBookData>().apply { addAll(it) }))
                     }
                     it.onFailure {
                         logger("DownloadsViewModel.DownloadsIntent.ShowBooks" + (it.message ?: "Unknown message"))
@@ -39,10 +40,14 @@ class DownloadsViewModelImpl @Inject constructor(
             is DownloadsViewModel.DownloadsIntent.Download -> {
                 repository.download(intent.book).onEach {
                     it.onSuccess {
-//                        dondloadPdf.emit(it)
+//                        uiState.update { state ->
+//                            val index = state.books.indexOf(element = it)
+//                            state.books[index] = it
+//                            uiState.emit(DownloadsState(state.books))
+//                            state
+//                        }
                     }
                     it.onFailure {
-//                        showMessage.emit(it.message ?: "Unknown message")
                     }
                 }.launchIn(viewModelScope)
             }

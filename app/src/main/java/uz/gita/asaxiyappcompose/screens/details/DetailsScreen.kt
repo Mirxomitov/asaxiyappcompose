@@ -1,6 +1,7 @@
 package uz.gita.asaxiyappcompose.screens.details
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,13 +51,13 @@ private fun DetailsContent(uiState: DetailsState, eventDispatcher: (DetailsViewM
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
                     .background(Color.Black),
             ) {
-                Text(text = "Book", fontSize = 18.sp, color = Color.White)
+                Text(text = "Book", fontSize = 18.sp, color = Color.White, modifier = Modifier.align(Alignment.Center))
             }
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier
@@ -91,13 +92,14 @@ private fun DetailsContent(uiState: DetailsState, eventDispatcher: (DetailsViewM
                     )
                     isPurchased = false
                 },
-                enabled = isPurchased
+                enabled = isPurchased,
+                modifier = Modifier.padding(top = 24.dp)
             ) {
                 Text(text = "BUY BOOK")
             }
 
-            Text(text = "Description:", fontSize = 18.sp, color = Color.Black, fontWeight = FontWeight.Bold)
-            Text(text = uiState.bookData.description, fontSize = 14.sp)
+            Text(modifier = Modifier.padding(top = 4.dp), text = "Description:", fontSize = 18.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+            Text(modifier = Modifier.padding(top = 8.dp), text = uiState.bookData.description, fontSize = 14.sp)
         }
     }
 }

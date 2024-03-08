@@ -48,21 +48,23 @@ class AudiosViewModelImpl @Inject constructor(
                 repository.loadCategories().onEach { it ->
                     it.onSuccess {
                         logger("Success get data ${it.size}")
-                        uiState.update { state ->
-                            state.allCategoryAudios.clear()
-                            state.allCategoryAudios.addAll(it)
-                            logger("Success get data update -> $it")
-                            state
-                        }
-//                        uiState.update { state -> state.copy(bookData = it) }
+//                        uiState.update { state ->
+//                            state.allCategoryAudios.clear()
+//                            state.allCategoryAudios.addAll(it)
+//                            logger("Success get data update -> $it")
+//                            state
+//                        }
+
+                        uiState.emit(AudiosState(allCategoryAudios = it))
                     }
 
                     it.onFailure {
                         logger("HELLO WORLD")
-                        uiState.update { state ->
-                            state.allCategoryAudios.clear()
-                            state
-                        }
+//                        uiState.update { state ->
+//                            state.allCategoryAudios = emptyList()
+//                            state
+//                        }
+                        uiState.emit(AudiosState(allCategoryAudios = emptyList()))
                     }
                 }.launchIn(viewModelScope)
 

@@ -30,7 +30,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -38,7 +37,6 @@ import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import uz.gita.asaxiyappcompose.R
 import uz.gita.asaxiyappcompose.data.model.UserBookData
-import uz.gita.asaxiyappcompose.ui.theme.AsaxiyAppComposeTheme
 import java.io.File
 
 class PlayerScreen : Screen {
@@ -53,9 +51,10 @@ class PlayerScreen : Screen {
 private fun PlayerContent(uiState: PlayerState, eventDispatcher: (PlayerViewModel.PlayerIntent) -> Unit) {
     eventDispatcher(PlayerViewModel.PlayerIntent.GetMusicData)
     var bookData by remember { mutableStateOf(UserBookData()) }
+    var mediaPlayer : MediaPlayer? = null
 
     if (uiState.bookData.path != "") {
-        val mediaPlayer = MediaPlayer.create(LocalContext.current, Uri.fromFile(File(uiState.bookData.path)))
+        mediaPlayer = MediaPlayer.create(LocalContext.current, Uri.fromFile(File(uiState.bookData.path)))
         mediaPlayer.start()
         bookData = uiState.bookData
     }
@@ -100,11 +99,18 @@ private fun PlayerContent(uiState: PlayerState, eventDispatcher: (PlayerViewMode
             Column {
                 Slider(
                     value = sliderPosition,
-                    onValueChange = { sliderPosition = it },
+                    onValueChange = {
+                        sliderPosition = it
+                        mediaPlayer?.seekTo(it.toInt())
+                    },
+                    valueRange = Cload,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                )
+                    ,
+                    onValueChangeFinished = {},
+
+                    )
                 Text(text = sliderPosition.toString())
             }
 
@@ -141,13 +147,5 @@ private fun PlayerContent(uiState: PlayerState, eventDispatcher: (PlayerViewMode
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewContent() {
-    AsaxiyAppComposeTheme {
-        PlayerContent(PlayerState(), {})
     }
 }
