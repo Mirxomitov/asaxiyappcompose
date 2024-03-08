@@ -9,6 +9,10 @@ import uz.gita.asaxiyappcompose.data.model.UserData
 
 
 interface AppRepository {
+    var currentCategory: String
+    var currentType: String
+    var currentBookName: String
+
     fun getBooksByCategoryMap(): Flow<Result<List<CategoryData>>>
     fun loadCategories(): Flow<Result<List<AudioCategoryData>>>
     fun loadAudios(category: String, type: String): Flow<Result<List<AudioBookData>>>

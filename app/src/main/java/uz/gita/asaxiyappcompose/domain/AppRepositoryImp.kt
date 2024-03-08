@@ -37,6 +37,10 @@ class AppRepositoryImp @Inject constructor(
 ) : AppRepository {
     private var listHome: List<UserBookData> = listOf()
 
+    override var currentCategory: String = ""
+    override var currentType: String = ""
+    override var currentBookName: String = ""
+
     override fun getBooksByCategoryMap(): Flow<Result<List<CategoryData>>> = callbackFlow {
         fireStore.collection("books")
             .get()
